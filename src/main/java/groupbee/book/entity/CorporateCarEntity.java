@@ -1,4 +1,4 @@
-package groupbee.book.data.corporatecar;
+package groupbee.book.entity.corporatecar;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "corporate_car")
-public class CorporateCarDto {
+public class CorporateCarEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;

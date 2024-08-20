@@ -1,4 +1,4 @@
-package groupbee.book.data.room;
+package groupbee.book.entity.room;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "room_book")
-public class RoomBookDto {
+public class RoomBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

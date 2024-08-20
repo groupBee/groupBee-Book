@@ -1,4 +1,4 @@
-package groupbee.book.data.room;
+package groupbee.book.entity.room;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "room")
-public class RoomDto {
+public class RoomEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;

@@ -1,4 +1,4 @@
-package groupbee.book.data.corporatecar;
+package groupbee.book.entity.corporatecar;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "corporate_car_book")
-public class CorporateCarBookDto {
+public class CorporateCarBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
