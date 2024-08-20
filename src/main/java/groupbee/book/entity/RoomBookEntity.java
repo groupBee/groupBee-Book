@@ -1,25 +1,29 @@
-package groupbee.book.entity.room;
+package groupbee.book.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
+@ToString
+@Builder
 @Table(name = "room_book")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class RoomBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "room_id")
-    private Integer roomId;
+    private Long roomId;
 
     @Column(name = "member_id")
-    private Integer memberId;
+    private String memberId;
 
     @Column(name = "enter")
     private LocalDateTime enter;
@@ -29,5 +33,4 @@ public class RoomBookEntity {
 
     @Column(name = "purpose", length = Integer.MAX_VALUE)
     private String purpose;
-
 }

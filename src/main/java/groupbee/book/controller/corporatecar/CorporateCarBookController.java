@@ -1,8 +1,10 @@
 package groupbee.book.controller.corporatecar;
 
-import groupbee.book.data.corporatecar.CorporateCarBookDto;
+import groupbee.book.entity.CorporateCarBookEntity;
 import groupbee.book.service.corporatecar.CorporateCarBookService;
+import groupbee.book.service.feign.FeignClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,29 +13,35 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/cars")
 public class CorporateCarBookController {
-
     private final CorporateCarBookService corporateCarBookService;
 
+    // 멤버 아이디 별 데이터 추가
     @PostMapping("/insert")
-    public void insertCorporateCars(@RequestBody CorporateCarBookDto dto)
+    public ResponseEntity<CorporateCarBookEntity> insertCorporateCars(@RequestBody CorporateCarBookEntity corporateCarBookEntity)
     {
-        corporateCarBookService.insertCorporateCars(dto);
+        return corporateCarBookService.insertCorporateCars(corporateCarBookEntity);
     }
 
+    // 전체 리스트 출력
     @GetMapping("/booklist")
-    public List<CorporateCarBookDto> listCorporateCarBook() {
+    public ResponseEntity<List<CorporateCarBookEntity>> listCorporateCarBook() {
         return corporateCarBookService.getAllCorporateCarBook();
     }
 
     // 예약 삭제
-    @DeleteMapping("/delete/{id}")
-    public void deleteCorporateCarBook(@PathVariable Integer id) {
-        corporateCarBookService.deleteCorporateCarBook(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCorporateCarBook(@PathVariable Long id) {
+        boolean result = corporateCarBookService.deleteById(id);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //업데이트
     @PutMapping("/update/{id}")
-    public void updateCorporateCarBook(@PathVariable Integer id, @RequestBody CorporateCarBookDto dto) {
-        corporateCarBookService.updateCorporateCarBook(id, dto);
+    public void updateCorporateCarBook(@PathVariable Long id, @RequestBody CorporateCarBookEntity corporateCarBookEntity) {
+        corporateCarBookService.updateCorporateCarBook(id, corporateCarBookEntity);
     }
 }

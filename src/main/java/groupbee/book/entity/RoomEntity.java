@@ -1,20 +1,21 @@
-package groupbee.book.entity.room;
+package groupbee.book.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@ToString
+@Builder
 @Table(name = "room")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class RoomEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", length = Integer.MAX_VALUE)
     private String name;
@@ -24,5 +25,4 @@ public class RoomEntity {
 
     @Column(name = "photo", length = Integer.MAX_VALUE)
     private String photo;
-
 }
