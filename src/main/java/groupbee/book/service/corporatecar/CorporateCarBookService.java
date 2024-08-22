@@ -32,6 +32,7 @@ public class CorporateCarBookService {
             CorporateCarBookEntity saveEntity = corporateCarBookRepository.save(corporateCarBookEntity);
             // 예약 정보가 저장된 후, Redis Pub 을 통해 발행
             CarBookDto carBookDto = CarBookDto.fromEntity(saveEntity);
+            carBookDto.setEventType("insert");
             redisPublisher.publish(carBookDto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(saveEntity);
@@ -72,6 +73,12 @@ public class CorporateCarBookService {
     public boolean deleteById(Long id) {
         if (corporateCarBookRepository.existsById(id)) {
             corporateCarBookRepository.deleteById(id);
+
+            CarBookDto carBookDto = new CarBookDto();
+            carBookDto.setId(id);
+            carBookDto.setEventType("delete");
+            redisPublisher.publish(carBookDto);
+
             return true;
         } else {
             return false;

@@ -36,4 +36,7 @@ public class CorporateCarBookEntity {
 
     @Column(name = "calendar_id")
     private Long calendarId;
+
+    @Column(name = "event_type")
+    private String eventType;
 }

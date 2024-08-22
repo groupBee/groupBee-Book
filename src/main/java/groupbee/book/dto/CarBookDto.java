@@ -17,6 +17,7 @@ public class CarBookDto {
     private LocalDateTime rentDay;
     private LocalDateTime returnDay;
     private String reason;
+    private String eventType;
 
     // DTO 와 Entity 간 변환 메서드
     public static CarBookDto fromEntity(CorporateCarBookEntity entity) {
@@ -26,7 +27,8 @@ public class CarBookDto {
                 entity.getCorporateCarId(),
                 entity.getRentDay(),
                 entity.getReturnDay(),
-                entity.getReason()
+                entity.getReason(),
+                entity.getEventType()
         );
     }
 }
