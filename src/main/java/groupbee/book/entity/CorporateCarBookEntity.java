@@ -20,7 +20,7 @@ public class CorporateCarBookEntity {
     private Long id;
 
     @Column(name = "corporate_car_id")
-    private Integer corporateCarId;
+    private Long corporateCarId;
 
     @Column(name = "member_id")
     private String memberId;
@@ -34,4 +34,6 @@ public class CorporateCarBookEntity {
     @Column(name = "reason", length = Integer.MAX_VALUE)
     private String reason;
 
+    @Column(name = "calendar_id")
+    private Long calendarId;
 }

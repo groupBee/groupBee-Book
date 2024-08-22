@@ -2,7 +2,9 @@ package groupbee.book.service.corporatecar;
 
 import feign.Feign;
 import feign.FeignException;
+import groupbee.book.dto.CarBookDto;
 import groupbee.book.entity.CorporateCarBookEntity;
+import groupbee.book.pubsub.RedisPublisher;
 import groupbee.book.repository.corporatecar.CorporateCarBookRepository;
 import groupbee.book.service.feign.FeignClient;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.Map;
 public class CorporateCarBookService {
     private final CorporateCarBookRepository corporateCarBookRepository;
     private final FeignClient feignClient;
+    private final RedisPublisher redisPublisher;
 
     public ResponseEntity<CorporateCarBookEntity> insertCorporateCars(CorporateCarBookEntity corporateCarBookEntity) {
         try {
@@ -27,6 +30,10 @@ public class CorporateCarBookService {
             corporateCarBookEntity.setMemberId((String) data.get("potal_id"));
 
             CorporateCarBookEntity saveEntity = corporateCarBookRepository.save(corporateCarBookEntity);
+            // 예약 정보가 저장된 후, Redis Pub 을 통해 발행
+            CarBookDto carBookDto = CarBookDto.fromEntity(saveEntity);
+            redisPublisher.publish(carBookDto);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(saveEntity);
         } catch (FeignException.BadRequest e) {
             // 400 Bad Request 발생 시 처리

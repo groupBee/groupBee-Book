@@ -29,7 +29,7 @@ public class CorporateCarBookController {
     }
 
     // 예약 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCorporateCarBook(@PathVariable Long id) {
         boolean result = corporateCarBookService.deleteById(id);
         if (result) {
