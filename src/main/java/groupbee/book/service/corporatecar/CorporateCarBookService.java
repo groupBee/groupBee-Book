@@ -28,11 +28,11 @@ public class CorporateCarBookService {
             Map<String, Object> response = feignClient.getEmployeeInfo();
             Map<String, Object> data = (Map<String, Object>) response.get("data");
             corporateCarBookEntity.setMemberId((String) data.get("potal_id"));
+            corporateCarBookEntity.setEventType("insert");
 
             CorporateCarBookEntity saveEntity = corporateCarBookRepository.save(corporateCarBookEntity);
             // 예약 정보가 저장된 후, Redis Pub 을 통해 발행
             CarBookDto carBookDto = CarBookDto.fromEntity(saveEntity);
-            carBookDto.setEventType("insert");
             redisPublisher.publish(carBookDto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(saveEntity);
@@ -86,17 +86,18 @@ public class CorporateCarBookService {
     }
 
     //업데이트
-    public void updateCorporateCarBook(Long id, CorporateCarBookEntity corporateCarBookEntity) {
-        // 예약이 존재하는지 확인
-        if (corporateCarBookRepository.existsById(id)) {
-            // 예약의 ID를 설정하고 저장
+    public ResponseEntity<CorporateCarBookEntity> updateCorporateCarBook(Long id, CorporateCarBookEntity corporateCarBookEntity) {
+        try {
+            corporateCarBookEntity.setEventType("update");
             corporateCarBookEntity.setId(id);
-            corporateCarBookRepository.save(corporateCarBookEntity);
-        } else {
-            // 예약이 존재하지 않으면 예외 발생
-            throw new RuntimeException("Booking not found with id: " + id);
+            CorporateCarBookEntity updateEntity = corporateCarBookRepository.save(corporateCarBookEntity);
+
+            CarBookDto carBookDto = CarBookDto.fromEntity(updateEntity);
+            redisPublisher.publish(carBookDto);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(updateEntity);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
 }
