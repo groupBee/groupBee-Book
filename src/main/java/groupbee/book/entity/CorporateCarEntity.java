@@ -1,29 +1,28 @@
-package groupbee.book.data.corporatecar;
+package groupbee.book.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@ToString
+@Builder
 @Table(name = "corporate_car")
-public class CorporateCarDto {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class CorporateCarEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "car_id", length = Integer.MAX_VALUE)
     private String carId;
-
 
     @Column(name = "type", length = Integer.MAX_VALUE)
     private String type;
 
     @Column(name = "photo", length = Integer.MAX_VALUE)
     private String photo;
-
 }

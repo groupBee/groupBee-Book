@@ -1,7 +1,6 @@
 package groupbee.book.controller.room;
 
-import groupbee.book.data.corporatecar.CorporateCarBookDto;
-import groupbee.book.data.room.RoomBookDto;
+import groupbee.book.entity.RoomBookEntity;
 import groupbee.book.service.room.RoomBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,25 +15,25 @@ public class RoomBookController {
     private final RoomBookService roomBookService;
 
     @PostMapping("/insert")
-    public void insertRooms(@RequestBody RoomBookDto dto)
+    public void insertRooms(@RequestBody RoomBookEntity dto)
     {
         roomBookService.insertRooms(dto);
     }
 
     @GetMapping("/booklist")
-    public List<RoomBookDto> listRoomBook() {
+    public List<RoomBookEntity> listRoomBook() {
         return roomBookService.getAllRoomBook();
     }
 
     // 예약 삭제
     @DeleteMapping("/delete/{id}")
-    public void deleteRoomBook(@PathVariable Integer id) {
+    public void deleteRoomBook(@PathVariable Long id) {
         roomBookService.deleteRoomBook(id);
     }
 
     //업데이트
     @PutMapping("/update/{id}")
-    public void updateRoomBook(@PathVariable Integer id, @RequestBody RoomBookDto dto) {
+    public void updateRoomBook(@PathVariable Long id, @RequestBody RoomBookEntity dto) {
         roomBookService.updateRoomBook(id, dto);
     }
 }

@@ -1,25 +1,29 @@
-package groupbee.book.data.corporatecar;
+package groupbee.book.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
+@ToString
+@Builder
 @Table(name = "corporate_car_book")
-public class CorporateCarBookDto {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class CorporateCarBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "corporate_car_id")
-    private Integer corporateCarId;
+    private Long corporateCarId;
 
     @Column(name = "member_id")
-    private Integer memberId;
+    private String memberId;
 
     @Column(name = "rent_day")
     private LocalDateTime rentDay;
@@ -30,4 +34,9 @@ public class CorporateCarBookDto {
     @Column(name = "reason", length = Integer.MAX_VALUE)
     private String reason;
 
+    @Column(name = "calendar_id")
+    private Long calendarId;
+
+    @Column(name = "event_type")
+    private String eventType;
 }

@@ -1,7 +1,7 @@
 package groupbee.book.controller.room;
 
 
-import groupbee.book.data.room.RoomDto;
+import groupbee.book.entity.RoomEntity;
 import groupbee.book.service.minio.MinioService;
 import groupbee.book.service.room.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class RoomController {
     private final MinioService minioService;
 
     @GetMapping("/list")
-    public List<RoomDto> listRooms() {
+    public List<RoomEntity> listRooms() {
         return roomService.getAllRooms();
     }
 

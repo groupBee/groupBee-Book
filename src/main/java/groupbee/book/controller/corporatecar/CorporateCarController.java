@@ -1,6 +1,6 @@
 package groupbee.book.controller.corporatecar;
 
-import groupbee.book.data.corporatecar.CorporateCarDto;
+import groupbee.book.entity.CorporateCarEntity;
 import groupbee.book.service.corporatecar.CorporateCarService;
 import groupbee.book.service.minio.MinioService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class CorporateCarController {
     private final MinioService minioService;
 
     @GetMapping("/list")
-    public List<CorporateCarDto> listCorporateCars() {
+    public List<CorporateCarEntity> listCorporateCars() {
         return corporateCarService.getAllCorporateCars();
     }
 
