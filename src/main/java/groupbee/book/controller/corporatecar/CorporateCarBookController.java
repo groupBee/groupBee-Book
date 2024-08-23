@@ -41,7 +41,7 @@ public class CorporateCarBookController {
 
     //업데이트
     @PutMapping("/update/{id}")
-    public void updateCorporateCarBook(@PathVariable Long id, @RequestBody CorporateCarBookEntity corporateCarBookEntity) {
-        corporateCarBookService.updateCorporateCarBook(id, corporateCarBookEntity);
+    public ResponseEntity<CorporateCarBookEntity> updateCorporateCarBook(@PathVariable Long id, @RequestBody CorporateCarBookEntity corporateCarBookEntity) {
+        return corporateCarBookService.updateCorporateCarBook(id, corporateCarBookEntity);
     }
 }
