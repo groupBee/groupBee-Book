@@ -27,4 +27,10 @@ public class CorporateCarController {
         String fileName = minioService.uploadFile("groupbee", "book", file);
         return fileName;
     }
+
+    // 차량 정보 확인
+    @GetMapping("{id}")
+    public CorporateCarEntity getCorporateCar(@PathVariable Long id) {
+        return corporateCarService.getCorporateCar(id);
+    }
 }
