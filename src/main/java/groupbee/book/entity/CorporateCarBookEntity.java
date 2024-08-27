@@ -34,9 +34,6 @@ public class CorporateCarBookEntity {
     @Column(name = "reason", length = Integer.MAX_VALUE)
     private String reason;
 
-    @Column(name = "calendar_id")
-    private Long calendarId;
-
     @Column(name = "event_type")
     private String eventType;
 }
