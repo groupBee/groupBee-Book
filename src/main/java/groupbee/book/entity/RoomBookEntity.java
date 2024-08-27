@@ -33,4 +33,7 @@ public class RoomBookEntity {
 
     @Column(name = "purpose", length = Integer.MAX_VALUE)
     private String purpose;
+
+    @Column(name = "event_type")
+    private String eventType;
 }

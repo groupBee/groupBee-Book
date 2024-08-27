@@ -9,13 +9,16 @@ import groupbee.book.repository.corporatecar.CorporateCarBookRepository;
 import groupbee.book.service.feign.FeignClient;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CorporateCarBookService {
@@ -23,17 +26,30 @@ public class CorporateCarBookService {
     private final FeignClient feignClient;
     private final RedisPublisher redisPublisher;
 
+    @Transactional
     public ResponseEntity<CorporateCarBookEntity> insertCorporateCars(CorporateCarBookEntity corporateCarBookEntity) {
         try {
             Map<String, Object> response = feignClient.getEmployeeInfo();
             Map<String, Object> data = (Map<String, Object>) response.get("data");
-            corporateCarBookEntity.setMemberId((String) data.get("potal_id"));
+            corporateCarBookEntity.setMemberId((String) data.get("potalId"));
             corporateCarBookEntity.setEventType("insert");
 
+            log.info(data.get("potalId").toString());
+
+            boolean exists = corporateCarBookRepository.existsByCorporateCarIdAnd(
+                    corporateCarBookEntity.getCorporateCarId(),
+                    corporateCarBookEntity.getRentDay(),
+                    corporateCarBookEntity.getReturnDay()
+            );
+
+            if (exists) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }
+
             CorporateCarBookEntity saveEntity = corporateCarBookRepository.save(corporateCarBookEntity);
-            // 예약 정보가 저장된 후, Redis Pub 을 통해 발행
+
             CarBookDto carBookDto = CarBookDto.fromEntity(saveEntity);
-            redisPublisher.publish(carBookDto);
+            redisPublisher.publishToCarBook(carBookDto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(saveEntity);
         } catch (FeignException.BadRequest e) {
@@ -77,7 +93,7 @@ public class CorporateCarBookService {
             CarBookDto carBookDto = new CarBookDto();
             carBookDto.setId(id);
             carBookDto.setEventType("delete");
-            redisPublisher.publish(carBookDto);
+            redisPublisher.publishToCarBook(carBookDto);
 
             return true;
         } else {
@@ -93,7 +109,7 @@ public class CorporateCarBookService {
             CorporateCarBookEntity updateEntity = corporateCarBookRepository.save(corporateCarBookEntity);
 
             CarBookDto carBookDto = CarBookDto.fromEntity(updateEntity);
-            redisPublisher.publish(carBookDto);
+            redisPublisher.publishToCarBook(carBookDto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(updateEntity);
         } catch (Exception e) {
