@@ -30,11 +30,8 @@ public class CorporateCarBookService {
     public ResponseEntity<CorporateCarBookEntity> insertCorporateCars(CorporateCarBookEntity corporateCarBookEntity) {
         try {
             Map<String, Object> response = feignClient.getEmployeeInfo();
-            Map<String, Object> data = (Map<String, Object>) response.get("data");
-            corporateCarBookEntity.setMemberId((String) data.get("potalId"));
+            corporateCarBookEntity.setMemberId((String) response.get("potalId"));
             corporateCarBookEntity.setEventType("insert");
-
-            log.info(data.get("potalId").toString());
 
             boolean exists = corporateCarBookRepository.existsByCorporateCarIdAnd(
                     corporateCarBookEntity.getCorporateCarId(),
@@ -113,6 +110,24 @@ public class CorporateCarBookService {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(updateEntity);
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    public ResponseEntity<List<CorporateCarBookEntity>> findByMemberId(String memberId) {
+        try {
+            return ResponseEntity.ok(corporateCarBookRepository.findByMemberId(memberId));
+        } catch (FeignException.BadRequest e) {
+            // 400 Bad Request 발생 시 처리
+            System.out.println("Bad Request: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (FeignException e) {
+            // 기타 FeignException 발생 시 처리
+            System.out.println("Feign Exception: " + e.getMessage());
+            return ResponseEntity.status(e.status()).build();
+        } catch (Exception e) {
+            // 일반 예외 처리
+            System.out.println("Exception: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

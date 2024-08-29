@@ -18,4 +18,6 @@ public interface CorporateCarBookRepository extends JpaRepository<CorporateCarBo
     boolean existsByCorporateCarIdAnd(@Param("corporateCarId") Long corporateCarId,
                                       @Param("rentDay") LocalDateTime rentDay,
                                       @Param("returnDay") LocalDateTime returnDay);
+
+    List<CorporateCarBookEntity> findByMemberId(String memberId);
 }

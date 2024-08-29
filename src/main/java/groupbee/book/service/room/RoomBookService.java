@@ -1,14 +1,11 @@
 package groupbee.book.service.room;
 
 import feign.FeignException;
-import groupbee.book.dto.CarBookDto;
 import groupbee.book.dto.RoomBookDto;
-import groupbee.book.entity.CorporateCarBookEntity;
 import groupbee.book.entity.RoomBookEntity;
 import groupbee.book.pubsub.RedisPublisher;
 import groupbee.book.repository.room.RoomBookRepository;
 import groupbee.book.service.feign.FeignClient;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,10 +29,8 @@ public class RoomBookService {
         try {
             // 1. Feign 클라이언트를 통해 사용자 정보 가져오기
             Map<String, Object> response = feignClient.getEmployeeInfo();
-            Map<String, Object> data = (Map<String, Object>) response.get("data");
-            roomBookEntity.setMemberId((String) data.get("potalId"));
+            roomBookEntity.setMemberId((String) response.get("potalId"));
             roomBookEntity.setEventType("insert");
-            log.info("RoomBookService : {}",data);
 
             // 2. 예약 중복 체크
             boolean exists = roomBookRepository.existsByRoomIdAnd(
@@ -117,6 +112,24 @@ public class RoomBookService {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(updateEntity);
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    public ResponseEntity<List<RoomBookEntity>> findByMemberId(String memberId) {
+        try {
+            return ResponseEntity.ok(roomBookRepository.findByMemberId(memberId));
+        } catch (FeignException.BadRequest e) {
+            // 400 Bad Request 발생 시 처리
+            System.out.println("Bad Request: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (FeignException e) {
+            // 기타 FeignException 발생 시 처리
+            System.out.println("Feign Exception: " + e.getMessage());
+            return ResponseEntity.status(e.status()).build();
+        } catch (Exception e) {
+            // 일반 예외 처리
+            System.out.println("Exception: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
