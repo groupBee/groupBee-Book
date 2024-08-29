@@ -18,4 +18,7 @@ public interface RoomBookRepository extends JpaRepository<RoomBookEntity, Long> 
     boolean existsByRoomIdAnd(@Param("roomId") Long roomId,
                               @Param("enter") LocalDateTime enter,
                               @Param("leave") LocalDateTime leave);
+
+
+    List<RoomBookEntity> findByMemberId(String memberId);
 }

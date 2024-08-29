@@ -8,6 +8,12 @@ spring:
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -24,3 +30,9 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+
+springdoc:
+  api-docs:
+    path: /api/book/swagger
+  swagger-ui:
+    path: /api/book/swagger

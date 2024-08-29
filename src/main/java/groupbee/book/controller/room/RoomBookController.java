@@ -55,4 +55,13 @@ public class RoomBookController {
     public ResponseEntity<RoomBookEntity> updateRoomBook(@PathVariable Long id, @RequestBody RoomBookEntity roomBookEntity) {
         return roomBookService.updateRoomBook(id, roomBookEntity);
     }
+
+    @Operation(
+            summary = "회의실 예약 리스트",
+            description = "멤버 아이디 별 회의실 예약 데이터 출력"
+    )
+    @GetMapping("{memberId}")
+    public ResponseEntity<List<RoomBookEntity>> findByMemberId(@PathVariable String memberId) {
+        return roomBookService.findByMemberId(memberId);
+    }
 }
