@@ -29,7 +29,7 @@ public class CorporateCarController {
     }
 
     // 차량 정보 확인
-    @GetMapping("{id}")
+    @GetMapping("/detail/{id}")
     public CorporateCarEntity getCorporateCar(@PathVariable Long id) {
         return corporateCarService.getCorporateCar(id);
     }
