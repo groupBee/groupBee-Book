@@ -114,8 +114,10 @@ public class CorporateCarBookService {
         }
     }
 
-    public ResponseEntity<List<CorporateCarBookEntity>> findByMemberId(String memberId) {
+    public ResponseEntity<List<CorporateCarBookEntity>> findByMemberId() {
         try {
+            Map<String, Object> response = feignClient.getEmployeeInfo();
+            String memberId = (String) response.get("potalId");
             return ResponseEntity.ok(corporateCarBookRepository.findByMemberId(memberId));
         } catch (FeignException.BadRequest e) {
             // 400 Bad Request 발생 시 처리

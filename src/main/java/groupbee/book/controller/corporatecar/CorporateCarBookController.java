@@ -61,8 +61,8 @@ public class CorporateCarBookController {
             summary = "차량 예약 리스트",
             description = "멤버 아이디 별 차량 예약 데이터 출력"
     )
-    @GetMapping("{memberId}")
-    public ResponseEntity<List<CorporateCarBookEntity>> findByMemberId(@PathVariable String memberId) {
-        return corporateCarBookService.findByMemberId(memberId);
+    @GetMapping("/list/memberId")
+    public ResponseEntity<List<CorporateCarBookEntity>> findByMemberId() {
+        return corporateCarBookService.findByMemberId();
     }
 }
