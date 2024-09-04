@@ -116,8 +116,10 @@ public class RoomBookService {
         }
     }
 
-    public ResponseEntity<List<RoomBookEntity>> findByMemberId(String memberId) {
+    public ResponseEntity<List<RoomBookEntity>> findByMemberId() {
         try {
+            Map<String, Object> response = feignClient.getEmployeeInfo();
+            String memberId = (String) response.get("potalId");
             return ResponseEntity.ok(roomBookRepository.findByMemberId(memberId));
         } catch (FeignException.BadRequest e) {
             // 400 Bad Request 발생 시 처리

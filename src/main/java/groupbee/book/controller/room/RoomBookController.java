@@ -60,8 +60,8 @@ public class RoomBookController {
             summary = "회의실 예약 리스트",
             description = "멤버 아이디 별 회의실 예약 데이터 출력"
     )
-    @GetMapping("{memberId}")
-    public ResponseEntity<List<RoomBookEntity>> findByMemberId(@PathVariable String memberId) {
-        return roomBookService.findByMemberId(memberId);
+    @GetMapping("/list/memberId")
+    public ResponseEntity<List<RoomBookEntity>> findByMemberId() {
+        return roomBookService.findByMemberId();
     }
 }
