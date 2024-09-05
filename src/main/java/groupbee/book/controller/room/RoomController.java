@@ -28,4 +28,9 @@ public class RoomController {
         String fileName = minioService.uploadFile("groupbee", "book", file);
         return fileName;
     }
+
+    @GetMapping("/detail/{id}")
+    public RoomEntity getRoom(@PathVariable Long id) {
+        return roomService.getRoom(id);
+    }
 }
