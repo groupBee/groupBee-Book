@@ -184,7 +184,6 @@ public class AdminListService {
                 return true;
             }
         }
-        // 삭제 실패 또는 리소스가 존재하지 않음
         return false;
     }
 }
