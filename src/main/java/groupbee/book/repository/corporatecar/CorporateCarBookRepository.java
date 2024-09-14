@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface CorporateCarBookRepository extends JpaRepository<CorporateCarBookEntity, Long> {
     @Query("SELECT COUNT(c) > 0 FROM CorporateCarBookEntity c " +
-    "WHERE c.corporateCarId = :corporateCarId " +
-    "AND (:rentDay < c.rentDay AND :returnDay > c.rentDay)")
+            "WHERE c.corporateCarId = :corporateCarId " +
+            "AND (c.rentDay < :returnDay AND c.returnDay > :rentDay)")
     boolean existsByCorporateCarIdAnd(@Param("corporateCarId") Long corporateCarId,
                                       @Param("rentDay") LocalDateTime rentDay,
                                       @Param("returnDay") LocalDateTime returnDay);
