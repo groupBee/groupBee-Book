@@ -1,6 +1,7 @@
 package groupbee.book.service.feign;
 
 import groupbee.book.config.FeignConfig;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Map;
@@ -10,4 +11,7 @@ public interface FeignClient {
 
     @GetMapping("/api/employee/info")
     Map<String, Object> getEmployeeInfo();
+
+//    @DeleteMapping("/api/calendar/deleteAllBookData")
+//    void deleteAllBookData(Long bookType, Long corporateCarId);
 }
